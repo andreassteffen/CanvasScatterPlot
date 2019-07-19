@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
+import ScatterPlot from './ScatterPlot';
 import './App.css';
+import * as d3 from "d3";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const BASECOLORS = ['tomato', 'green', 'blue', 'yellow'];
+const NRPOINTS = 500;
+
+const COLORS = d3.range(NRPOINTS).map(() =>
+    BASECOLORS.randomElement()
+)
+const DATA = d3.range(NRPOINTS).map((idx) => ({
+    x: Math.random(),
+    y: Math.random(),
+    r: 2,
+    color: COLORS[idx]
+}));
+
+
+class App extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {data: DATA, selectedPoints: []}
+    }
+
+    handleSelection(selectedPoints) {
+        this.setState({selectedPoints: selectedPoints})
+
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <div className={'container'}>
+                    <ScatterPlot data={this.state.data}
+                                 handleSelection={(selectedPoints) => this.handleSelection(selectedPoints)} width={1200}
+                                 height={800}/>
+                </div>
+                <div>
+                    {}
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
